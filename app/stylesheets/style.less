@@ -1,0 +1,277 @@
+@brand : #8D1DDC;
+@brand-light: #B175DC;
+@light-green: #BFFBC7;
+@light-red: #F77286;
+@tangerine : #ffaa00;
+
+html {
+	height: 100%;
+}
+a {
+  color: @brand; }
+a:hover {
+  color: @brand; }
+  
+ .brand {
+	 color: @brand;
+ }
+ p {
+	 margin-bottom: 1rem;
+ }
+ 
+ .button.button-primary,
+button.button-primary,
+input[type="submit"].button-primary,
+input[type="reset"].button-primary,
+input[type="button"].button-primary {
+  color: white;
+  background-color: @brand-light;
+  border-color: @brand-light; }
+.button.button-primary:hover,
+button.button-primary:hover,
+input[type="submit"].button-primary:hover,
+input[type="reset"].button-primary:hover,
+input[type="button"].button-primary:hover,
+.button.button-primary:focus,
+button.button-primary:focus,
+input[type="submit"].button-primary:focus,
+input[type="reset"].button-primary:focus,
+input[type="button"].button-primary:focus {
+  color: white;
+  background-color: @brand;
+  border-color: @brand; }
+ 
+  
+textarea {
+	height: 80px;
+	width: 500px;
+}
+input[type=text], input[type=search], input[type=password], textarea {
+	font-family: monospace;
+	font-size: 2rem;
+}
+input, textarea, select, fieldset {
+	margin-bottom: 1rem;
+}
+button {
+	font-size: 1.4rem;
+	padding-left: 1.4rem;
+	padding-right: 1.4rem;
+	 -webkit-transition: border .25s linear,color .25s linear,background-color .25s linear;
+    transition: border .25s linear,color .25s linear,background-color .25s linear;
+    -webkit-font-smoothing: subpixel-antialiased;
+	background-color: white;
+	text-transform: none;
+}
+button:hover, button:focus {
+	background-color: #EFECEC;
+}
+button:active {
+	background-color: #DDD;
+}
+button:disabled {
+	color: black;
+	border-color: #DDD;
+	background-color: #DDD;
+	cursor: not-allowed;
+	font-weight: normal;
+}
+button:disabled:hover {
+	color: black;
+	border-color:#DDD;
+	background-color: #DDD;
+	cursor: not-allowed;
+	font-weight: normal;
+}
+
+.button-danger:hover, .button-danger:focus {
+	border-color: darkred;
+	color: darkred;
+	background-color: lightpink;
+}
+.button-danger:active {
+	background-color: @light-red;
+}
+
+.button-clipboard:hover, .button-clipboard:focus {
+	border-color: @tangerine;
+	background-color: #F7D38A;
+}
+.button-clipboard:active {
+	background-color: @tangerine;
+}
+
+.top-most {
+	padding-top: 3rem;
+}
+
+section {
+	margin-bottom: 3rem;
+}
+
+.welcome {
+	padding: 2rem 1rem;
+	text-align: center;
+}
+.welcome-option {
+	text-align: center;
+	padding: 0 2rem 2rem 2rem;
+}
+.new-file {
+	text-align: left;
+	padding-top: 2rem;
+	border-top: 1px solid lightgray;
+}
+@media (min-width: 550px) {
+	.new-file {
+		padding-top: 0rem;
+		border-top: 0px;
+		border-left: 1px solid lightgray;
+	}
+}
+.pending-drop {
+	box-shadow: inset 0px 0px 42px 8px @light-green;
+}
+
+.drop-target {
+	padding: 8rem 2rem;
+	border-radius: 10px;
+	border: 4px dashed lightgray;
+}
+
+.delete-entry {
+	padding: 2rem;
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+}
+
+.button-small {
+	text-transform: none;
+	font-size: 1.1rem;
+	font-size: 1rem;
+    padding-left: .7rem;
+    padding-right: .7rem;
+	margin-bottom: 0rem;
+	height:32px;
+	line-height: inherit;
+}
+.button-small i {
+	font-size: 1.4rem;
+}
+.button-push {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+.button-push-left {
+	margin-left: 1rem;
+}
+.button-push-right {
+	margin-right: 1rem;
+}
+
+
+
+.status-bar {
+	height: 3rem;
+	padding: 1rem;
+}
+
+.in-clipboard {
+	border-radius: 10px;
+	display: inline-block;
+	height: 10px;
+	background-color: @tangerine;
+}
+
+.entry-title {
+	font-size: 2rem;
+	cursor: pointer;
+}
+.entry-title a {
+	text-decoration: none;
+}
+.entry {
+	padding-bottom: .6rem;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid lightgray;
+}
+.total-entries {
+	margin-right:17px;
+}
+
+/* flexbox */
+.list-container {
+	position: absolute;
+    width: 100%;
+    height: 100%;
+	
+	display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: stretch;
+}
+.list-header {
+	padding-top: .5rem;
+	height: 9rem;
+}
+
+.list-body {
+	flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+	overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.list-clipboard {
+	height: 4rem;
+	padding: 1rem 0rem;
+}
+
+.list-footer {
+	height: 5rem;
+	padding-top:.5rem;
+	padding-bottom:.5rem;
+	background-color: #666;
+}
+.list-footer .buttons {
+	display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+.footer-button {
+	padding: 0 4rem;
+	color: white;
+	cursor: pointer;
+}
+.footer-button i {
+	display: block;
+	text-align: center;
+    font-size: 3rem;
+}
+.footer-button:hover i {
+	text-shadow: 0px 0px 7px @brand-light, 0px 0px 12px @brand-light;
+}
+.save-button:hover i {
+	text-shadow: 0px 0px 0px @light-green, 0px 0px 17px @light-green;
+}
+.revert-button:hover i {
+	text-shadow: 0px 0px 7px @light-red, 0px 0px 12px @light-red;
+}
+
+
+.thinking-message {
+	padding-top: 4rem;
+	font-size: 5rem;
+	color: lightgray;
+	text-align: center;
+}
+
+.animated {
+	-webkit-animation-duration: 200ms;
+	animation-duration: 200ms;
+}

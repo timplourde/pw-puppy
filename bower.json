@@ -1,0 +1,15 @@
+{
+  "name": "pw-puppy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "knockout": "~3.3.0",
+    "skeleton": "~2.0.4",
+    "lodash": "~3.10.1",
+    "font-awesome": "~4.4.0",
+    "knockout.animate": "~0.1.1"
+  },
+  "resolutions": {
+    "knockout": "~3.3.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "pw-puppy",
+  "productName": "pw-puppy",
+  "identifier": "com.example.pw-puppy",
+  "description": "Simple password mamager.",
+  "version": "0.1.0",
+  "author": "Tim Plourde",
+  "main": "main.js",
+  "config": {
+    "target": "development"
+  },
+  "dependencies": {
+    "fs-jetpack": "^0.7.0"
+  }
+}

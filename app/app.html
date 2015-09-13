@@ -1,0 +1,319 @@
+<!doctype html>
+<html>
+<head>
+    <title>pw-puppy</title>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="stylesheets/fonts.css"  type="text/css">
+    <link rel="stylesheet" href="vendor/bower/skeleton/css/normalize.css" type='text/css'/>
+    <link rel="stylesheet" href="vendor/bower/skeleton/css/skeleton.css" type='text/css'/>
+    <link rel="stylesheet" href="vendor/bower/font-awesome/css/font-awesome.css" type='text/css'/>
+    <link rel="stylesheet" href="vendor/bower/animate.css/animate.css" type='text/css'/>
+    <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+
+    <script src="vendor/electron_boilerplate/env_config.js"></script>
+    <script src="vendor/electron_boilerplate/context_menu.js"></script>
+    
+    <script src="vendor/bower/knockout/dist/knockout.js"></script>
+    <script src="vendor/bower/knockout.animate/src/knockout.animate.js"></script>
+    <script src="vendor/bower/lodash/lodash.js"></script>
+    <script src="vendor/require.js"></script>
+    
+    <script>
+        requirejs(['app'], function (bootstrap) {
+            bootstrap();
+        });
+    </script>
+    <!--<script src="app.js"></script>-->
+</head>
+<body>
+
+   
+    <div id="app-container" >
+      <div data-bind="template: currentMode" ></div>
+    </div>
+   
+    <template id="file-not-loaded">
+      
+          <div data-bind="template: showOpenFilePasswordPrompt() ? 'open-file-password-prompt' : 'home' "></div>
+          
+          <template id='home'>
+            <div data-bind="animate:{ animation: 'fadeIn' , state: true }" >
+              <section class="container welcome">
+                  <h1><strong class="brand">pw-puppy</strong></h1> 
+                  <p><i class="fa fa-lock"></i> all the things!</p>
+              </section>
+            
+              <section class="container row">
+                  <div class="one-half column">
+                    
+                      <div class="welcome-option" >
+                        <p>
+                          <button class="button-primary" data-bind="click: openFileDialog"><i class="fa fa-folder-open-o"></i> Open File</button>
+                        </p>
+                        
+                        <!-- 
+                            
+                            doesn't work as of electron 0.30.x???
+                            
+                            <p class="drop-target" data-bind="dragFile: openFile">
+                          (or just drag a file here)
+                          </p>
+                          
+                          -->
+                      </div>
+                    
+                  </div>
+                  <div class="one-half column">
+                    
+                    <div class="welcome-option new-file" >
+                        <h5>Create a new file</h5>
+                        
+                        <p>
+                            <label for="newFilePassword">Password</label>
+                            <input type="password" id="newFilePassword" maxlength="100" data-bind="textInput: newFile.password">
+                        </p>
+                        
+                        <p>
+                            <label for="confirmNewFilePassword">Confirm</label>
+                            <input type="password" id="confirmNewFilePassword" maxlength="100"  data-bind="textInput: newFile.confirmPassword">
+                        </p>
+                        
+                        <p>
+                          <button class="button-primary" data-bind="click: createNewFile, enable: newFile.isValidToCreate">
+                            <i class="fa fa-floppy-o"></i> Save New File As...</button>
+                          </p>
+                    
+                    </div>
+                      
+                  </div> <!-- /column -->
+              </section> <!-- /row -->
+            </div>
+            
+       </template>
+    
+      <template id='open-file-password-prompt'>
+        <section class="container top-most" data-bind="animate:{ animation: 'fadeInRight' , state: true }" >
+            
+                <p>
+                  Opening <span data-bind="text: pendingOpenFilePath"></span>...
+                </p>
+            
+                <p>
+                    <label for="openFilePassword">Password</label>
+                    <input type="password" id="openFilePassword"  maxlength="100" 
+                        data-bind="textInput: openFilePassword,
+                                  enterkey: openSesame, 
+                                  hasFocus: focusOnOpenFilePassword">
+                </p>
+                
+                <p>
+                  <button class="button-primary" data-bind="click: openSesame"><i class="fa fa-folder-open-o"></i> Open File</button>
+                  <button class="button-push" data-bind="click: cancelOpenFile">Cancel</button>
+                </p>
+                  
+        </section>
+      </template>
+          
+          
+    </template>
+    
+    
+    
+    <template id="file-loaded">
+
+      <div data-bind="template: currentEditorView"></div>
+
+        <template id="list">
+          
+          <div class="list-container" data-bind="animate:{ animation: 'fadeIn' , state: true }">
+              <div class="list-header">
+                
+                    <div class="container">
+                          <p>
+                              File: <em data-bind="text: currentFileName"></em> 
+                              <span class="u-pull-right total-entries">
+                                <span data-bind="text: entries().length"></span> total entries
+                               </span>
+                          </p>
+                          <div class="row">
+                            <div class="six columns">
+                               <input type="search" class="u-full-width" 
+                                  data-bind="textInput: searchQuery, hasFocus: focusOnSearchQuery" 
+                                  placeholder="Filter by title" /> 
+                             </div>
+                          </div>  
+                    </div> 
+                    
+              </div>
+              
+              <div class="list-body">
+                
+                  <div class="container">
+                        <!-- ko foreach: filteredEntries -->
+                        <div class="row entry">
+                          
+                          <div class="six columns entry-title" data-bind="click: $parent.editEntry">
+                              <a href="javascript:void(0)" data-bind="text: title"></a>
+                          </div>
+                          <div class="six columns">
+                            <div class="u-pull-right">
+                              <!-- ko if: userName -->
+                                <button class="button-small button-push-right button-clipboard" 
+                                  data-bind="click: $parent.copyUserNameToClipboard">
+                                    <i class="fa fa-user"></i> Copy User Name
+                                 </button>
+                                <!-- /ko -->
+                                <!-- ko if: password -->
+                                <button class="button-small button-clipboard" 
+                                  data-bind="click: $parent.copyPasswordToClipboard">
+                                  <i class="fa fa-lock"></i> Copy Password
+                                 </button>
+                                 <!-- /ko -->
+                            </div>
+                          </div>
+                        </div>
+                      <!-- /ko -->
+                      <!-- ko if: hasEntries() && !filteredEntries().length -->
+                        <section>
+                          <p><em>No entries match your filter.</em></p>
+                        </section>
+                      <!-- /ko -->
+                      <!-- ko ifnot: hasEntries -->
+                        <section>
+                          <p class="top-most">Click <strong>Add Entry</strong> below to get started.
+                        </section>
+                      <!-- /ko -->
+                  </div>
+
+              </div>
+              <div class="list-clipboard" data-bind="if: clipboardTimer.isActive">
+                
+                <div class="container">
+                  <div>
+                     Clipboard will be cleared in <span data-bind="text: clipboardTimer.countdown"></span>...
+                  </div>
+                  <div>
+                    <span class="in-clipboard" data-bind="attr:{ 'style': 'width: '+ ((clipboardTimer.countdown() / 10) * 90) + '%'}"></span>
+                  </div>
+                   
+                 </div>
+                 
+              </div>
+              <div class="list-footer">
+                  <div class="container buttons">
+                        <div class="footer-button" data-bind="click: createEntry">
+                          <i class="fa fa-plus-circle"></i> 
+                          Add Entry
+                        </div>
+                        
+                         <!-- ko ifnot: hasUnsavedChanges -->
+                         <div class="footer-button" data-bind="click: showPasswordChange">
+                            <i class="fa fa-lock"></i> 
+                            Change Password
+                        </div>
+                        <!-- /ko -->
+                         
+                      <!-- ko if: hasUnsavedChanges -->
+                       <div class="footer-button save-button" data-bind="click: save">
+                            <i class="fa fa-floppy-o "></i> 
+                            Save
+                        </div>
+                         <div class="footer-button revert-button" data-bind="click: revert">
+                            <i class="fa fa-undo "></i> 
+                            Revert
+                        </div>
+                        <!-- /ko --> 
+                  </div>
+              </div>
+           </div>
+          
+          
+        </template>
+        
+        <template id="entry">
+          
+          <section class="container top-most" data-bind="with: entryEditor, animate:{ animation: 'fadeInRight' , state: true }">
+              <div class="row">
+                  <div class="one-half column">
+                     <label for="edit-title">Title (required)</label>
+                    <input type="text" id="edit-title" maxlength="100"
+                      data-bind="textInput: props.title, hasFocus: focusOnTitle">
+                  </div>
+                  <div class="one-half column">
+                    
+                    <label for="edit-url">URL</label>
+                    <input type="text" id="edit-url" maxlength="1000" data-bind="textInput: props.url">
+                   
+                  </div>
+               </div>
+             
+             <p>
+                    <label for="edit-userName">User Name</label>
+                    <input type="text" id="edit-userName" maxlength="1000"
+                      data-bind="textInput: props.userName">
+                </p>
+                
+                <p>
+                    <label for="edit-password">Password (required)</label>
+                    <input type="text" id="edit-password" maxlength="1000"
+                      data-bind="attr: {'type': showPassword() ? 'text': 'password'}, textInput: props.password">
+                    <button class="button-push" 
+                      data-bind="click: toggleShowPassword, text: showPassword() ? 'Hide' : 'Show'" 
+                        tabindex="-1"></button>
+                    <button  data-bind="click: autoGenPassword" tabindex="-1">Auto-Generate</button>
+                </p>
+                <p data-bind="ifnot: showPassword">
+                    <label for="confirm-password">Confirm Password (required)</label>
+                    <input type="password" id="confirm-password" maxlength="1000" data-bind="textInput: confirmPassword">
+                </p>
+
+                <p>
+                    <label for="edit-notes">Notes</label>
+                    <textarea id="edit-notes" maxlength="2000" data-bind="textInput: props.notes"></textarea>
+                </p>
+                <p>
+                  <button class="button-primary" data-bind="click: save, enable: isValidToSave">OK</button>
+                  <button class="button-push" data-bind="click: cancel">Cancel</button>
+                  <!-- ko if: showDeleteButton -->
+                    <button class="button-danger u-pull-right" data-bind="click: $parent.destroyCurrentlySelctedEntry"><i class="fa fa-trash"></i> Delete</button>
+                  <!-- /ko -->
+                </p>
+                  
+                  
+              </section>
+          
+        </template>
+        
+        <template id="change-password">
+          <section class="container top-most" data-bind="with: passwordChange, animate:{ animation: 'fadeInRight' , state: true }">
+                <h5>Change your file's master password</h5>
+                <p>
+                    <label for="new-master-password">New Password</label>
+                    <input type="password" id="new-master-password"  maxlength="100"  data-bind="textInput: newPassword, hasFocus: focusOnNewPassword">
+                </p>
+                <p>
+                    <label for="confirm-new-master-password">Confirm</label>
+                    <input type="password" id="confirm-new-master-password"  maxlength="100"  data-bind="textInput: confirm">
+                </p>
+                 <p>
+                  <button class="button-primary" data-bind="click: commit, enable: isValidToCommit"><i class="fa fa-floppy-o"></i> Save</button>
+                  <button class="button-push" data-bind="click: cancel">Cancel</button>
+                </p>
+            </section>
+        </template>
+
+    </template>
+    
+    <template id="thinking">
+        <div class="thinking-message">
+            <p><i class="fa fa-cog fa-spin"></i>  Loading... </p>
+            
+        </div>
+        
+    </template>
+
+</body>
+</html>
