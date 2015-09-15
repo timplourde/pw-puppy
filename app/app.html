@@ -32,16 +32,16 @@
 <body>
 
    
-    <div id="app-container" >
-      <div data-bind="template: currentMode" ></div>
+    <div id="app-container" class="full-height">
+      <div data-bind="template: currentMode" class="full-height"></div>
     </div>
    
     <template id="file-not-loaded">
       
-          <div data-bind="template: showOpenFilePasswordPrompt() ? 'open-file-password-prompt' : 'home' "></div>
+        <div data-bind="template: showOpenFilePasswordPrompt() ? 'open-file-password-prompt' : 'home' " class="full-height"></div>
           
           <template id='home'>
-            <div data-bind="animate:{ animation: 'fadeIn' , state: true }" >
+            <div data-bind="dragFile: openFile, animate:{ animation: 'fadeIn' , state: true }" class="drop-target full-height">
               <section class="container welcome">
                   <h1><strong class="brand">pw-puppy</strong></h1> 
                   <p><i class="fa fa-lock"></i> all the things!</p>
@@ -55,15 +55,10 @@
                           <button class="button-primary" data-bind="click: openFileDialog"><i class="fa fa-folder-open-o"></i> Open File</button>
                         </p>
                         
-                        <!-- 
-                            
-                            doesn't work as of electron 0.30.x???
-                            
-                            <p class="drop-target" data-bind="dragFile: openFile">
+                        <p  >
                           (or just drag a file here)
-                          </p>
-                          
-                          -->
+                        </p>
+
                       </div>
                     
                   </div>
