@@ -41,9 +41,3 @@ function bootstrap(){
 
 
 export default bootstrap;
-//bootstrap();
-// 
-// document.addEventListener("DOMContentLoaded", function(event) { 
-// 	
-// 
-// });
