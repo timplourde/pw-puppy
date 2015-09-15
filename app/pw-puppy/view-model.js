@@ -104,6 +104,7 @@ export function ViewModel(fs, dialog, clipboard) {
     self.loadListView();
   });
   self.showPasswordChange = function() {
+    self.passwordChange.show();
     self.currentEditorView(editorViews.changePassword);
   };
   self.copyPasswordToClipboard = function(model) {
