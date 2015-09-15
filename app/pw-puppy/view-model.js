@@ -3,9 +3,13 @@ import { EntryEditor } from './entry-editor';
 import { ClipboardTimer } from './clipboard-timer';
 import { webCrypto } from './web-crypto';
 import { ChangePassword } from './change-password';
+import { initKnockoutHelpers } from './knockout-helpers';
 
 export function ViewModel(fs, dialog, clipboard) {
-	var self = this,
+ 
+  initKnockoutHelpers();
+	
+  var self = this,
     fileDialogOptions = { 
       filters: [{
         name: 'pwpuppy', 
