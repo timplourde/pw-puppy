@@ -129,7 +129,7 @@
                 
                     <div class="container">
                           <p>
-                              File: <em data-bind="text: currentFileName"></em> 
+                              File: <strong data-bind="text: currentFileNameShortened, sttr:{ 'title':currentFileName}"></strong> 
                               <span class="u-pull-right total-entries">
                                 <span data-bind="text: entries().length"></span> total entries
                                </span>

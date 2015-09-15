@@ -50,6 +50,13 @@ export function ViewModel(fs, dialog, clipboard) {
     }
     return "file-not-loaded";
   });
+  self.currentFileNameShortened = ko.computed(function(){
+    var fileName = self.currentFileName();
+    if(!fileName) {
+      return;
+    }
+    return fileName.replace(/^.*[\\\/]/, '');
+  });
 
    /* file-loaded mode */
   self.pristineModel = ko.observable();
