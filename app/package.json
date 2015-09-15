@@ -3,7 +3,7 @@
   "productName": "pw-puppy",
   "identifier": "com.example.pw-puppy",
   "description": "Simple password mamager.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Tim Plourde",
   "main": "main.js",
   "config": {
